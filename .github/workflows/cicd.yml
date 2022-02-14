@@ -35,4 +35,11 @@ jobs:
       - run: flutter pub get
       - run: flutter test
       - run: flutter build web --release
-      
+
+      - name: Deploy to PROD environment
+        uses: w9jds/firebase-action@v2.0.0
+        with:
+          args: deploy --only hosting
+        env: 
+            FIREBASE_TOKEN: ${{secrets.FIREBASE_TOKEN}}
+            PROJECT_ID: ${{secrets.FIREBASE_DEV_PROJECT_ID}}    
