@@ -33,5 +33,6 @@ jobs:
           channel: 'dev'
       - run: flutter config --enable-web
       - run: flutter pub get
+      - run: flutter test
       - run: flutter build web --release
       

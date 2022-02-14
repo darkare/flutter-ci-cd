@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "kinela-connect-dev-a3afc"
-  }
+    "DEV": "cloud-function-32a30",
+    "UAT": "cloud-functions-uat-337bd",
+    "PROD": "cloud-functions-prod"
+  },
+  "targets": {}
 }
