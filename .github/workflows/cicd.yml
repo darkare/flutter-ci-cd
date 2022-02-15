@@ -15,25 +15,36 @@ env:
 jobs:
   # This workflow contains a single job called "build"
   cicd:
+    runs-on: ${{ matrix.os }}                           
+    strategy:                             
+      matrix:                               
+        os: [ubuntu-latest]                               
+        include:                                 
+          - os: ubuntu-latest                                   
+            flutter_path: /opt/hostedtoolcache/flutter
+            
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    # runs-on: ubuntu-latest
+    # include:
+    #   - os: 
+    #     flutter_path: /opt/hostedtoolcache/flutter
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout repository
         uses: actions/checkout@v2
-        
-      - name: Cache Flutter dependencies
-        uses: actions/cache@v1
-        with:
-          path: /opt/hostedtoolcache/flutter
-          key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
 
       - uses: subosito/flutter-action@v2
         with:
           flutter-version:  ${{ env.flutter_version }}
           channel: 'stable'
+
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v1
+        with:
+          path: /opt/hostedtoolcache/flutter
+          key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
 
       - run: flutter config --enable-web
       - run: flutter pub get
@@ -49,4 +60,13 @@ jobs:
           args: deploy --only hosting
         env: 
             FIREBASE_TOKEN: ${{secrets.FIREBASE_TOKEN}}
-            PROJECT_ID: ${{secrets.FIREBASE_DEV_PROJECT_ID}}    
+            PROJECT_ID: ${{secrets.FIREBASE_DEV_PROJECT_ID}} 
+
+      - name: Run semantic release
+        # if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        env: 
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm ci
+          npx semantic-release
+
