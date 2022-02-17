@@ -56,14 +56,14 @@ jobs:
       # - run: get-graphql-schema -h x-hasura-admin-secret=${{DEV_HASURA_ADMIN_SECRET}}
       # - run: flutter pub run build_runner build
       - run: flutter test
-      - run: flutter build web --release --dart-define=PROJECT_ID="${{secrets.FIREBASE_DEV_PROJECT_ID}}"
+      - run: flutter build web --release --dart-define=PROJECT_ID="${{secrets.FIREBASE_DEV_PROJECT_ID}}" 
       - name: Deploy to Dev environment
         uses: w9jds/firebase-action@v2.0.0
         with:
           args: deploy --only hosting
         env: 
-            FIREBASE_TOKEN: cloud-function-32a30
-            PROJECT_ID: ${{secrets.FIREBASE_DEV_PROJECT_ID}} 
+            FIREBASE_TOKEN: ${{secrets.FIREBASE_TOKEN}}
+            PROJECT_ID: cloud-function-32a30
 
       - name: Run semantic release
         # if: github.event_name == 'push' && github.ref == 'refs/heads/master'
