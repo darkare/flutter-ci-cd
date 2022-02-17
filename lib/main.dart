@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterweb1/util.dart';
 
 void main() {
   runApp(const MyApp());
@@ -6,12 +7,15 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
+  
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    const projectId = String.fromEnvironment('PROJECT_ID', defaultValue: 'PROJECT_ID_SOME_DEFAULT_VALUE');
+    String e = encryptText("abcdefg", "abcdefgh12345678" , "myIv");
+    decryptText(e, "abcdefgh12345678","myIv");
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter Demo' + projectId,
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -24,7 +28,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page with GitAction 1'),
+      home: const MyHomePage(title: 'Flutter Demo Home Page with GitAction 1' + projectId),
     );
   }
 }
